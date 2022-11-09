@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { IAppState } from '@core/auth';
+import { Store } from '@ngrx/store';
 
 @Component({
 	selector: 'brs-top-nav-bar',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopNavBarComponent implements OnInit {
 
-	constructor() { }
+	constructor(private store: Store<IAppState>) { }
 
 	ngOnInit(): void {
 	}
