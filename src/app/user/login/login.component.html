@@ -1,0 +1,35 @@
+<div class="d-flex justify-content-around">
+	<div class="justify-content-center w-50 p-3 rounded" style="background-color: rgb(207, 222, 231);">
+		<h2>Login</h2>
+		<hr />
+		<form novalidate [formGroup]="loginForm" (ngSubmit)="login()">
+			<div class="mb-3">
+				<label for="logim-email-address" class="form-label">Email address</label>
+				<input type="email" class="form-control" id="logim-email-address" placeholder="email@example.com" formControlName="email"
+					[ngClass]="{'is-invalid': (loginForm.get('email')?.touched || loginForm.get('email')?.dirty ) && !loginForm.get('email')?.valid}">
+			</div>
+			<div class="mb-3">
+				<label for="exampleDropdownFormPassword2" class="form-label">Password</label>
+				<input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password" formControlName="password"
+					[ngClass]="{'is-invalid': (loginForm.get('password')?.touched || loginForm.get('password')?.dirty) && !loginForm.get('password')?.valid}">
+			</div>
+			<div class="mb-3">
+				<div class="form-check">
+					<input type="checkbox" class="form-check-input" id="check-box-remember-me">
+					<label class="form-check-label" for="check-box-remember-me" (click)="rememberMeCheckBox()">
+						Remember me
+					</label>
+				</div>
+			</div>
+
+			<!-- Submit button -->
+			<button type="button" class="btn btn-primary btn-block mt-4 mb-4" (click)="login()">Sign in</button>
+
+			<!-- Register buttons -->
+			<div class="text-center">
+				<p>Not a member? <a [routerLink]="['/user', 'register']">Register</a></p>
+			</div>
+		</form>
+
+	</div>
+</div>

@@ -1,0 +1,49 @@
+<div class="d-flex justify-content-around">
+	<div class="justify-content-center w-50 p-3 rounded" style="background-color: rgb(207, 222, 231);">
+		<h2>Registration</h2>
+		<hr />
+		<form novalidate [formGroup]="registerForm" (ngSubmit)="register()" class="row g-3 needs-validation">
+
+			<div class="mb-3">
+				<label for="exampleDropdownFormEmail2" class="form-label">Email address</label>
+				<div class="input-group has-validation">
+					<input type="email" class="form-control" id="exampleDropdownFormEmail2"
+						placeholder="email@example.com" formControlName="email"
+						[ngClass]="{'is-invalid': (registerForm.get('email')?.touched || registerForm.get('email')?.dirty ) && !registerForm.get('email')?.valid}">
+				</div>
+
+				<div class="valid-feedback" *ngIf="registerForm.get('email')?.valid">
+					Looks good!
+				</div>
+				<div class="invalid-feedback" *ngIf="!registerForm.get('email')?.valid">
+					Please choose a valid email.
+				</div>
+			</div>
+
+			<div class="mb-3">
+				<label for="exampleDropdownFormPassword2" class="form-label">Password</label>
+				<input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password"
+					formControlName="password"
+					[ngClass]="{'is-invalid': (registerForm.get('password')?.touched || registerForm.get('password')?.dirty) && !registerForm.get('password')?.valid}">
+			</div>
+
+			<div class="mb-3">
+				<label for="select-reporter-group" class="form-label">Reporter Group</label>
+				<select class="form-select" id="select-reporter-group" aria-label="Select Reporter Group">
+					<option *ngFor="let reporter of reporters$ | async" value="{{ reporter.id }}"
+						[attr.selected]="reporter.id === 1 ? true : null">{{ reporter.description }}</option>
+				</select>
+			</div>
+
+
+			<!-- Submit button -->
+			<button type="button" class="btn btn-primary btn-block mt-4 mb-4" (click)="register()">Register</button>
+
+			<!-- Register buttons -->
+			<div class="text-center">
+				<p>Already have account? <a [routerLink]="['/user', 'login']">Login</a></p>
+			</div>
+		</form>
+
+	</div>
+</div>
