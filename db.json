@@ -63,7 +63,7 @@
 				"canEdit": 1,
 				"canDelete": 1,
 				"canSearch": 1,
-				"canComment": 0,
+				"canComment": 0
 			}
 		},
 		{
@@ -75,7 +75,7 @@
 				"canEdit": 0,
 				"canDelete": 0,
 				"canSearch": 0,
-				"canComment": 1,
+				"canComment": 1
 			}
 		},
 		{
@@ -87,7 +87,7 @@
 				"canEdit": 0,
 				"canDelete": 0,
 				"canSearch": 0,
-				"canComment": 1,
+				"canComment": 1
 			}
 		}
 	],
@@ -107,6 +107,6 @@
 			"weight": 0,
 			"description": "Hight"
 		}
-	]
+	],
 	"users": []
 }
