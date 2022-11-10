@@ -1,0 +1,33 @@
+<div>
+	<button type="button" class="btn btn-secondary btn-lg mb-4">Create new</button>
+	<brs-bugs-reporting-table [data]="bugs">
+		<ng-template #headers>
+			<tr *ngIf="">
+				<th scope="col"><input type="text" class="form-control"></th>
+				<th scope="col"><input type="text" class="form-control"></th>
+				<th scope="col"><input type="text" class="form-control"></th>
+				<th scope="col"></th>
+				<th scope="col"><input type="text" class="form-control"></th>
+				<th colspan="2" scope="colgroup"></th>
+			</tr>
+			<tr>
+				<th scope="col">Title</th>
+				<th scope="col">Priority</th>
+				<th scope="col">Reporter</th>
+				<th scope="col">Date Created</th>
+				<th scope="col">Status</th>
+				<th colspan="2" scope="colgroup"></th>
+			</tr>
+		</ng-template>
+		<ng-template #rows let-row>
+			<td>{{ row.title }}</td>
+			<td>{{ row.priority | bugPriority }}</td>
+			<td>{{ row.reporter?.description }}</td>
+			<td>{{ row.created | date}}</td>
+			<td>{{ row.status }}</td>
+			<td><button type="button" class="btn btn-light"><i class="fa-regular fa-pen-to-square"></i></button></td>
+			<td><button type="button" class="btn btn-light"><i [iconOnHover]="['fa-solid', 'fa-trash']" [iconOnLeave]="['fa-regular','fa-trash-can']" class="fa-regular fa-trash-can"></i></button></td>
+		</ng-template>
+
+	</brs-bugs-reporting-table>
+</div>

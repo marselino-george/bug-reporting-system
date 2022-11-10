@@ -1,0 +1,23 @@
+<div>
+	<table class="table table table-bordered">
+		<thead>
+			<ng-container *ngTemplateOutlet="
+				headers || defaultHeaderTemplate;
+				context: { $implicit: data }"></ng-container>
+		</thead>
+		<tbody>
+			<tr *ngFor="let row of data">
+				<ng-container *ngTemplateOutlet="
+				rows || defaultRowTemplate;
+				context: { $implicit: row }"></ng-container>
+			</tr>
+		</tbody>
+	</table>
+	<ng-template #defaultHeaderTemplate>
+		<th *ngFor="let header of data[0] | keyvalue">{{ header.key }}</th>
+	</ng-template>
+	<ng-template #defaultRowTemplate>
+		<th *ngFor="let row of rows | keyvalue">{{ row.value }}</th>
+	</ng-template>
+
+</div>
