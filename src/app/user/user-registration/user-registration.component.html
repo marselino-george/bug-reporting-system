@@ -2,34 +2,55 @@
 	<div class="justify-content-center w-50 p-3 rounded" style="background-color: rgb(207, 222, 231);">
 		<h2>Registration</h2>
 		<hr />
-		<form novalidate [formGroup]="registerForm" (ngSubmit)="register()" class="row g-3 needs-validation">
+		<form novalidate [formGroup]="registrationForm" (ngSubmit)="register()" class="row g-3 needs-validation">
 
 			<div class="mb-3">
 				<label for="exampleDropdownFormEmail2" class="form-label">Email address</label>
 				<div class="input-group has-validation">
 					<input type="email" class="form-control" id="exampleDropdownFormEmail2"
 						placeholder="email@example.com" formControlName="email"
-						[ngClass]="{'is-invalid': (registerForm.get('email')?.touched || registerForm.get('email')?.dirty ) && !registerForm.get('email')?.valid}">
+						[ngClass]="{'is-invalid': (registrationForm.get('email')?.touched || registrationForm.get('email')?.dirty ) && !registrationForm.get('email')?.valid}">
 				</div>
 
-				<div class="valid-feedback" *ngIf="registerForm.get('email')?.valid">
+				<div class="valid-feedback" *ngIf="registrationForm.get('email')?.valid">
 					Looks good!
 				</div>
-				<div class="invalid-feedback" *ngIf="!registerForm.get('email')?.valid">
+				<div class="invalid-feedback" *ngIf="!registrationForm.get('email')?.valid">
 					Please choose a valid email.
 				</div>
 			</div>
 
 			<div class="mb-3">
 				<label for="exampleDropdownFormPassword2" class="form-label">Password</label>
-				<input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="Password"
+				<input type="password" class="form-control" id="exampleDropdownFormPassword2" placeholder="password"
 					formControlName="password"
-					[ngClass]="{'is-invalid': (registerForm.get('password')?.touched || registerForm.get('password')?.dirty) && !registerForm.get('password')?.valid}">
+					[ngClass]="{'is-invalid': (registrationForm.get('password')?.touched || registrationForm.get('password')?.dirty) && !registrationForm.get('password')?.valid}">
+				<div class="invalid-feedback" *ngIf="!registrationForm.get('password')?.valid">
+					Please choose a valid password.
+					<small class="text-danger" *ngIf="registrationForm.get('password')?.hasError('minLength')">
+						The minimum length for this field is 6 characters.
+					</small>
+					<small class="text-danger"
+					*ngIf="registrationForm.get('password')?.hasError('maxlength')">
+					The maximum length for this field is 20 characters.
+				</small>
+				</div>
+			</div>
+
+			<div class="mb-3">
+				<label for="registration-txt-name" class="form-label">Name</label>
+				<input type="text" class="form-control" id="registration-txt-name" placeholder="Your name"
+					formControlName="name"
+					[ngClass]="{'is-invalid': (registrationForm.get('name')?.touched || registrationForm.get('name')?.dirty) && !registrationForm.get('name')?.valid}">
+				<div class="invalid-feedback" *ngIf="!registrationForm.get('name')?.valid">
+					Please fill your name.
+				</div>
 			</div>
 
 			<div class="mb-3">
 				<label for="select-reporter-group" class="form-label">Reporter Group</label>
-				<select class="form-select" id="select-reporter-group" aria-label="Select Reporter Group">
+				<select class="form-select" id="select-reporter-group" aria-label="Select Reporter Group"
+					formControlName="reporter">
 					<option *ngFor="let reporter of reporters$ | async" value="{{ reporter.id }}"
 						[attr.selected]="reporter.id === 1 ? true : null">{{ reporter.description }}</option>
 				</select>

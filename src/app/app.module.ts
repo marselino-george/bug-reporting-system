@@ -31,7 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
 	StoreModule.forRoot({}),
 	EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production, name: 'Bug Reporting System Devtools' }),
-	ToastrModule.forRoot()
+	ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { catchError, EMPTY, first, Observable } from 'rxjs';
+import { catchError, EMPTY, first, map, Observable, tap } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from '@core/auth/';
 import { IReporter } from '../models/reporter.model';
 import { UserService } from '../user.service';
+import { INewUserRegister, IUserRegistrationResponse } from '@core/auth/models/register.model';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { UserService } from '../user.service';
 export class UserRegistrationComponent implements OnInit {
 
 	reporters$: Observable<IReporter[]> | undefined;
-	registerForm: FormGroup;
+	registrationForm: FormGroup;
 
 	constructor(
 		private authService: AuthService,
@@ -24,9 +25,10 @@ export class UserRegistrationComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private toastr: ToastrService) {
 
-		this.registerForm = this.formBuilder.group({
+		this.registrationForm = this.formBuilder.group({
 			email: ['', [Validators.required, Validators.email]],
-			password: ['', [Validators.required, Validators.minLength(6), Validators.max(20)]],
+			password: [null, [Validators.required, Validators.minLength(5)]],
+			name: ['', [Validators.required, Validators.minLength(3)]],
 			reporter: ['', [Validators.required]]
 		});
 		// Long syntax using FormGroup:
@@ -34,7 +36,7 @@ export class UserRegistrationComponent implements OnInit {
 		// 	email: new FormControl(),
 		// 	password: new FormControl()
 		// });
-	 }
+	}
 
 	ngOnInit(): void {
 		this.getReporters();
@@ -51,10 +53,41 @@ export class UserRegistrationComponent implements OnInit {
 	}
 
 	register() {
-		const result$ = this.authService.register({});
+		if (!this.registrationForm.valid) {
+			this.toastr.error('Please fill all the required fields.');
+			return;
+		}
 
+		const reporterId = Number(this.registrationForm.get('reporter')?.value);
+
+		this.reporters$?.pipe(
+			map( results => results.filter(r => r.id === reporterId) ),
+			first()
+		).subscribe((reporters: IReporter[]) => {
+			let foundReporter: IReporter = reporters[0];
+			const newUser = {
+				email: this.registrationForm.get('email')?.value,
+				password: this.registrationForm.get('password')?.value,
+				name: this.registrationForm.get('name')?.value,
+				reporter: foundReporter
+			} as INewUserRegister;
+			this.authService.register<IUserRegistrationResponse, INewUserRegister>(newUser).pipe(
+				catchError(err => {
+					return EMPTY;
+				}),
+				first(),
+
+			).subscribe((item: IUserRegistrationResponse) => {
+				if (item.accessToken == null || item.accessToken == '') {
+					this.toastr.error('Registration couldn\'t be performed. Please try again.');
+					return;
+				}
+
+				this.toastr.success('Registration completed successfully \ud83d\ude01');
+			});
+		});
 	}
 
-	get email() { return this.registerForm.get('email'); }
-	get password() { return this.registerForm.get('password'); }
+	get email() { return this.registrationForm.get('email'); }
+	get password() { return this.registrationForm.get('password'); }
 }
