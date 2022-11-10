@@ -7,3 +7,5 @@ export { LogoutGuard } from './logout.guard';
 export { AuthService } from './auth.service';
 export { ILogin, ILoginResponse } from './models/login.model';
 export { IRegister } from './models/register.model';
+export { IsLoggedInGuard } from './is-logged-in.guard';
+export { LogoutGuard } from './logout.guard';
