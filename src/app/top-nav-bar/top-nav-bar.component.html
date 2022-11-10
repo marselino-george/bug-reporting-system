@@ -8,7 +8,8 @@
 
 		<div class="collapse navbar-collapse" id="navbarsExample08">
 			<a class="navbar-brand" [routerLink]="''"><i class="fa-solid fa-house"></i></a>
-			<span *ngIf="authService.isLoggedIn()">Hello {{authService.getUser()?.user?.name}}</span>
+			<a class="nav-link active border-start p-2" boldOnHover [underline]="true" aria-current="page" [routerLink]="['/','bug-report']">Bug Report</a>
+
 			<!-- <ul class="navbar-nav">
 				<li class="nav-item">
 					<a class="nav-link active" aria-current="page" href="#">Centered nav only</a>
@@ -33,8 +34,8 @@
 		</div>
 		<div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight">
 			<div class="p-2 bd-highlight">
-				<ul class="navbar-nav">
-					<li><a class="nav-link active" aria-current="page" [routerLink]="['/','bug-report']">Bug Report</a></li>
+				<ul class="navbar-nav ">
+					<li class="align-self-center"><span class="m-4" *ngIf="authService.isLoggedIn()">Hello {{authService.getUser()?.user?.name}}</span><span class="border-end"></span></li>
 					<li class="nav-item dropstart">
 						<a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-bs-toggle="dropdown"
 							aria-expanded="false"><i class="fa-regular fa-circle-user"></i></a>
