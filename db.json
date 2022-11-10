@@ -1,112 +1,131 @@
 {
-	"bugs": [
-		{
-			"id": "1",
-			"title": "bug 1",
-			"description": "This is a simple bug",
-			"priority": 1,
-			"reporter": {
-				"id": 1,
-				"code": "QA",
-				"description": "QA"
-			},
-			"status": "Done",
-			"created": "2022-10-27",
-			"comments": [
-				{
-					"reporter": "Fan",
-					"description": "this is just a description"
-				}
-			]
-		},
-		{
-			"id": "6358f56cbf47a30046de24f0",
-			"title": "bug 2",
-			"description": "This is a simple bug",
-			"priority": 1,
-			"reporter": {
-				"id": 1,
-				"code": "QA",
-				"description": "QA"
-			},
-			"status": "Done",
-			"created": "2022-10-26",
-			"comments": [
-				{
-					"reporter": "Fan",
-					"description": "this is just a description"
-				}
-			]
-		},
-		{
-			"id": "3",
-			"title": "bag test",
-			"description": "this is a test description",
-			"priority": 0,
-			"reporter": {
-				"id": 2,
-				"code": "DEV",
-				"description": "Developer"
-			},
-			"status": "For Review",
-			"created": "2022-09-30T16:32:19.595Z",
-			"comments": []
-		}
-	],
-	"reporters": [
-		{
-			"id": 1,
-			"code": "QA",
-			"description": "QA",
-			"permissions": {
-				"canAdd": 1,
-				"canEdit": 1,
-				"canDelete": 1,
-				"canSearch": 1,
-				"canComment": 0
-			}
-		},
-		{
-			"id": 2,
-			"code": "DEV",
-			"description": "Developer",
-			"permissions": {
-				"canAdd": 0,
-				"canEdit": 0,
-				"canDelete": 0,
-				"canSearch": 0,
-				"canComment": 1
-			}
-		},
-		{
-			"id": 3,
-			"code": "PO",
-			"description": "Product Owner",
-			"permissions": {
-				"canAdd": 1,
-				"canEdit": 0,
-				"canDelete": 0,
-				"canSearch": 0,
-				"canComment": 1
-			}
-		}
-	],
-	"priorities": [
-		{
-			"id": 1,
-			"weight": 2,
-			"description": "Low"
-		},
-		{
-			"id": 2,
-			"weight": 1,
-			"description": "Moderate"
-		},
-		{
-			"id": 3,
-			"weight": 0,
-			"description": "Hight"
-		}
-	],
-	"users": []
+  "bugs": [
+    {
+      "id": "1",
+      "title": "bug 1",
+      "description": "This is a simple bug",
+      "priority": 1,
+      "reporter": {
+        "id": 1,
+        "code": "QA",
+        "description": "QA"
+      },
+      "status": "Done",
+      "created": "2022-10-27",
+      "comments": [
+        {
+          "reporter": "Fan",
+          "description": "this is just a description"
+        }
+      ]
+    },
+    {
+      "id": "6358f56cbf47a30046de24f0",
+      "title": "bug 2",
+      "description": "This is a simple bug",
+      "priority": 1,
+      "reporter": {
+        "id": 1,
+        "code": "QA",
+        "description": "QA"
+      },
+      "status": "Done",
+      "created": "2022-10-26",
+      "comments": [
+        {
+          "reporter": "Fan",
+          "description": "this is just a description"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "bag test",
+      "description": "this is a test description",
+      "priority": 0,
+      "reporter": {
+        "id": 2,
+        "code": "DEV",
+        "description": "Developer"
+      },
+      "status": "For Review",
+      "created": "2022-09-30T16:32:19.595Z",
+      "comments": []
+    }
+  ],
+  "reporters": [
+    {
+      "id": 1,
+      "code": "QA",
+      "description": "QA",
+      "permissions": {
+        "canAdd": 1,
+        "canEdit": 1,
+        "canDelete": 1,
+        "canSearch": 1,
+        "canComment": 0
+      }
+    },
+    {
+      "id": 2,
+      "code": "DEV",
+      "description": "Developer",
+      "permissions": {
+        "canAdd": 0,
+        "canEdit": 0,
+        "canDelete": 0,
+        "canSearch": 0,
+        "canComment": 1
+      }
+    },
+    {
+      "id": 3,
+      "code": "PO",
+      "description": "Product Owner",
+      "permissions": {
+        "canAdd": 1,
+        "canEdit": 0,
+        "canDelete": 0,
+        "canSearch": 0,
+        "canComment": 1
+      }
+    }
+  ],
+  "priorities": [
+    {
+      "id": 1,
+      "weight": 2,
+      "description": "Low"
+    },
+    {
+      "id": 2,
+      "weight": 1,
+      "description": "Moderate"
+    },
+    {
+      "id": 3,
+      "weight": 0,
+      "description": "High"
+    }
+  ],
+  "users": [
+    {
+      "email": "qa1@test.com",
+      "password": "$2a$10$kzk/Qpsgc9hdfieL/26knux4csR9j8og9lhj6.Ejgmao8DZeTpAuC",
+      "name": "Giorgos",
+      "reporter": {
+        "id": 1,
+        "code": "QA",
+        "description": "QA",
+        "permissions": {
+          "canAdd": 1,
+          "canEdit": 1,
+          "canDelete": 1,
+          "canSearch": 1,
+          "canComment": 0
+        }
+      },
+      "id": 1
+    }
+  ]
 }
