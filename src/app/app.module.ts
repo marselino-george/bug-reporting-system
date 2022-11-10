@@ -15,6 +15,7 @@ import { AppComponent } from './app.component';
 import { TopNavBarComponent } from './top-nav-bar/top-nav-bar.component';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
+import { SharedDirectivesModule } from './shared/directives/shared-directives.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { HttpClientModule } from '@angular/common/http';
 	EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production, name: 'Bug Reporting System Devtools' }),
 	ToastrModule.forRoot(),
+	SharedDirectivesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
