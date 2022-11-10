@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconOnHoverDirective } from './icon-on-hover.directive';
+import { BoldOnHoverDirective } from './bold-on-hover.directive';
 
 
 
@@ -8,10 +9,12 @@ import { IconOnHoverDirective } from './icon-on-hover.directive';
   declarations: [],
   imports: [
     CommonModule,
-	IconOnHoverDirective
+	IconOnHoverDirective,
+	BoldOnHoverDirective
   ],
   exports:[
-	IconOnHoverDirective
+	IconOnHoverDirective,
+	BoldOnHoverDirective
   ]
 })
 export class SharedDirectivesModule { }
