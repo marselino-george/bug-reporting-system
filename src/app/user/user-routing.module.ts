@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
-import { LogoutGuard, IsLoggedInGuard } from '@core/auth';
+import { DoLogoutGuard, WhenIsLoggedInGuard, WhenIsLoggedOutGuard } from '@core/auth';
 import { NoopComponent } from '@shared/noop/noop.component';
 import { LoginComponent } from './login/login.component';
 import { UserRegistrationComponent } from './user-registration/user-registration.component';
 
 const routes: Routes = [
-	{ path: 'login', component: LoginComponent, canActivate: [IsLoggedInGuard] },
-	{ path: 'logout', component: NoopComponent, canActivate: [LogoutGuard] },
-	{ path: 'register', component: UserRegistrationComponent, canActivate: [IsLoggedInGuard] },
+	{ path: 'login', component: LoginComponent, canActivate: [WhenIsLoggedOutGuard] },
+	{ path: 'logout', component: NoopComponent, canActivate: [DoLogoutGuard] },
+	{ path: 'register', component: UserRegistrationComponent, canActivate: [WhenIsLoggedOutGuard] },
 ];
 
 @NgModule({
