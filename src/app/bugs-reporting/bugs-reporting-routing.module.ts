@@ -5,8 +5,14 @@ import { NoopComponent } from '@shared/noop/noop.component';
 import { BugsReportingShellComponent } from './bugs-reporting-shell/bugs-reporting-shell.component';
 
 const routes: Routes = [
-	// { path: 'add', component: LoginComponent, canActivate: [IsLoggedInGuard] },
-	// { path: 'edit', component: NoopComponent, canActivate: [LogoutGuard] },
+	{
+		path: 'add',
+		component: NoopComponent
+	},
+	{
+		path: 'edit/:id',
+		component: NoopComponent
+	},
 	{ path: '', component: BugsReportingShellComponent },
 ];
 

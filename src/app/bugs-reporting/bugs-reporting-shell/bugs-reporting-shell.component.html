@@ -1,13 +1,13 @@
 <div>
-	<button type="button" class="btn btn-secondary btn-lg mb-4">Create new</button>
-	<brs-bugs-reporting-table [data]="bugs">
+	<button type="button" class="btn btn-secondary btn-lg mb-4" (click)="createNewBug()">Create new</button>
+	<brs-bugs-reporting-table [data]="(bugs$ | async) || []">
 		<ng-template #headers>
-			<tr *ngIf="">
-				<th scope="col"><input type="text" class="form-control"></th>
-				<th scope="col"><input type="text" class="form-control"></th>
-				<th scope="col"><input type="text" class="form-control"></th>
+			<tr *ngIf="true" [formGroup]="searchForm">
+				<th scope="col"><input type="text" class="form-control" formControlName="searchColTitle"></th>
+				<th scope="col"><input type="text" class="form-control" formControlName="searchColPriority"></th>
+				<th scope="col"><input type="text" class="form-control" formControlName="searchColReporter"></th>
 				<th scope="col"></th>
-				<th scope="col"><input type="text" class="form-control"></th>
+				<th scope="col"><input type="text" class="form-control" formControlName="searchColStatus"></th>
 				<th colspan="2" scope="colgroup"></th>
 			</tr>
 			<tr>
@@ -25,8 +25,8 @@
 			<td>{{ row.reporter?.description }}</td>
 			<td>{{ row.created | date}}</td>
 			<td>{{ row.status }}</td>
-			<td><button type="button" class="btn btn-light"><i class="fa-regular fa-pen-to-square"></i></button></td>
-			<td><button type="button" class="btn btn-light"><i [iconOnHover]="['fa-solid', 'fa-trash']" [iconOnLeave]="['fa-regular','fa-trash-can']" class="fa-regular fa-trash-can"></i></button></td>
+			<td><button type="button" class="btn btn-light" (click)="editBug()"><i [iconOnHover]="['fa-solid', 'fa-pen']" [iconOnLeave]="['fa-regular','fa-pen-to-square']" class="fa-regular fa-pen-to-square"></i></button></td>
+			<td><button type="button" class="btn btn-light" (click)="deleteBug()"><i [iconOnHover]="['fa-solid', 'fa-trash']" [iconOnLeave]="['fa-regular','fa-trash-can']" class="fa-regular fa-trash-can"></i></button></td>
 		</ng-template>
 
 	</brs-bugs-reporting-table>

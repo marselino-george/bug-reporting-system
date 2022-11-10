@@ -8,12 +8,11 @@ const routes: Routes = [
 		path: 'bug-report',
 		loadChildren: () => import('./bugs-reporting/bugs-reporting.module').then(i => i.BugsReportingModule ),
 		canActivate: [WhenIsLoggedInGuard]
-
 	},
 	{ path: 'user', loadChildren: () => import('./user/user.module').then(i => i.UserModule ) },
 	{ path: 'home', component: HomeComponent },
 	{ path: '', redirectTo: 'home', pathMatch: 'full' },
-	{ path: '**', redirectTo: 'home', pathMatch: 'full' }
+	{ path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

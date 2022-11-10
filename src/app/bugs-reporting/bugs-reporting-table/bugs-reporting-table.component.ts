@@ -1,4 +1,5 @@
 import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'brs-bugs-reporting-table',

@@ -6,13 +6,15 @@ import { BugsReportingShellComponent } from './bugs-reporting-shell/bugs-reporti
 import { BugsReportingTableComponent } from './bugs-reporting-table/bugs-reporting-table.component';
 import { BugPriorityPipe } from './bug-priority.pipe';
 import { SharedDirectivesModule } from '@shared/directives/shared-directives.module';
+import { BugsReportingDetailComponent } from './bugs-reporting-detail/bugs-reporting-detail.component';
 
 
 @NgModule({
   declarations: [
     BugsReportingShellComponent,
     BugsReportingTableComponent,
-    BugPriorityPipe
+    BugPriorityPipe,
+    BugsReportingDetailComponent
   ],
   imports: [
     CommonModule,
