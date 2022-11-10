@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { IsLoggedInGuard } from '@core/auth';
 import { HomeComponent } from './home/home.component';
-import { UserRoutingModule } from './user/user-routing.module';
 
 const routes: Routes = [
 	// {
@@ -12,7 +12,7 @@ const routes: Routes = [
 	{ path: 'user', loadChildren: () => import('./user/user.module').then(i => i.UserModule ) },
 	{ path: 'home', component: HomeComponent },
 	{ path: '', redirectTo: 'home', pathMatch: 'full' },
-	{ path: '**', redirectTo: 'home', pathMatch: 'full' }
+	{ path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({
