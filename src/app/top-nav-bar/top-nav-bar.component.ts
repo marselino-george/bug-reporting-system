@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IAppState } from '@core/auth';
+import { AuthService, IAppState } from '@core/auth';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 })
 export class TopNavBarComponent implements OnInit {
 
-	constructor(private store: Store<IAppState>) { }
+	constructor(private store: Store<IAppState>, public authService: AuthService) { }
 
 	ngOnInit(): void {
 	}

@@ -8,6 +8,7 @@
 
 		<div class="collapse navbar-collapse" id="navbarsExample08">
 			<a class="navbar-brand" [routerLink]="''"><i class="fa-solid fa-house"></i></a>
+			<span *ngIf="authService.isLoggedIn()">Hello {{authService.getUser()?.user?.name}}</span>
 			<!-- <ul class="navbar-nav">
 				<li class="nav-item">
 					<a class="nav-link active" aria-current="page" href="#">Centered nav only</a>
@@ -33,13 +34,14 @@
 		<div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight">
 			<div class="p-2 bd-highlight">
 				<ul class="navbar-nav">
+					<li><a class="nav-link active" aria-current="page" [routerLink]="['bug-report']">Bug Report</a></li>
 					<li class="nav-item dropstart">
 						<a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-bs-toggle="dropdown"
 							aria-expanded="false"><i class="fa-regular fa-circle-user"></i></a>
 						<ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start" aria-labelledby="dropdown08">
-							<li><a class="dropdown-item" [routerLink]="['user', 'login']">Login</a></li>
-							<li><a class="dropdown-item" [routerLink]="['user', 'logout']">Logout</a></li>
-							<li><a class="dropdown-item" [routerLink]="['user', 'register']">Register</a></li>
+							<li *ngIf="!authService.isLoggedIn()"><a class="dropdown-item" [routerLink]="['user', 'login']">Login</a></li>
+							<li *ngIf="!authService.isLoggedIn()"><a class="dropdown-item" [routerLink]="['user', 'register']">Register</a></li>
+							<li *ngIf="authService.isLoggedIn()"><a class="dropdown-item" [routerLink]="['user', 'logout']">Logout</a></li>
 						</ul>
 					</li>
 				</ul>
