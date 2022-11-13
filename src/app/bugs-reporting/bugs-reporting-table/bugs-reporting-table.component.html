@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="data$ | async as data">
 	<table class="table table table-bordered">
 		<thead>
 			<ng-container *ngTemplateOutlet="

@@ -1,9 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '@core/auth';
+import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, Subject, of } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ToastrService } from 'ngx-toastr';
-import { combineLatest, debounceTime, distinctUntilChanged, filter, map, Observable, of, Subject, switchMap, takeUntil, tap, expand, iif, EMPTY } from 'rxjs';
 import { IBugResponse, ICommentResponse, IReporterResponse } from '../models/ibugresponse.model';
+
 
 interface ISearchableBugsTable {
 	searchColTitle: string;
@@ -11,22 +13,25 @@ interface ISearchableBugsTable {
 	searchColReporter: string;
 	searchColStatus: string;
 }
+
+@UntilDestroy()
 @Component({
 	selector: 'brs-bugs-reporting-shell',
 	templateUrl: './bugs-reporting-shell.component.html',
 	styleUrls: ['./bugs-reporting-shell.component.scss']
 })
-export class BugsReportingShellComponent implements OnInit, OnDestroy {
+export class BugsReportingShellComponent implements OnInit {
 
-	bugs$!: Observable<IBugResponse[]>;
+	bugs$: Observable<IBugResponse[]>;
 	searchForm: FormGroup;
 	destroy$ = new Subject<any>();
-	bugs2$!: Observable<IBugResponse[]>;
 
 	constructor(
 		private authService: AuthService,
 		private formBuilder: FormBuilder,
 		private toastr: ToastrService) {
+
+		this.bugs$ = of(this.originalBugs);
 
 		this.searchForm = this.formBuilder.group({
 			searchColTitle: '',
@@ -34,10 +39,6 @@ export class BugsReportingShellComponent implements OnInit, OnDestroy {
 			searchColReporter: '',
 			searchColStatus: ''
 		} as ISearchableBugsTable);
-	}
-
-	ngOnInit(): void {
-		this.bugs$ = of(this.originalBugs);
 
 		let searchForm$ = this.searchForm.valueChanges.pipe(
 			debounceTime(400),
@@ -53,62 +54,54 @@ export class BugsReportingShellComponent implements OnInit, OnDestroy {
 			}),
 			distinctUntilChanged()
 		);
+
 		const filterMaps = {
 			searchColTitle: 'title',
 			searchColPriority: 'priority',
 			searchColReporter: 'reporter',
 			searchColStatus: 'status'
 		} as { [id: string]: string } ;
-		// const filterKeyMaps = {
-		// 	title: 'searchColTitle',
-		// 	priority: 'searchColPriority',
-		// 	reporter: 'searchColReporter',
-		// 	status: 'searchColStatus'
-		// };
-		const simpleStrIncludes = (val: string, checkAgainst: string) => val.includes(checkAgainst);
+
+		const simpleStrIncludes = (val: string, checkAgainst: string) => {
+			return val.includes(checkAgainst);
+		};
 		const filterActions = {
 			searchColTitle: simpleStrIncludes,
-			searchColPriority: simpleStrIncludes,
+			searchColPriority: (valId: number, checkAgainst: number) => valId === checkAgainst,
 			searchColReporter: simpleStrIncludes,
 			searchColStatus: simpleStrIncludes
 		} as { [id: string]: any } ;
 
-		const checkNullOrEmpty = (checkStr: string) : boolean => checkStr != null && checkStr.trim() != '';
+		const checkNullOrEmpty = (checkStr: string) : boolean => {
+			return checkStr != null && checkStr.trim() != ''
+		};
 
-		let test$: Observable<IBugResponse[]>
-		// this.bugs$
-		 = combineLatest([
+		combineLatest([
 			of(this.originalBugs),
 			searchForm$
 		])
 		.pipe(
+			untilDestroyed(this),
 			map(([originalBugs, searchForm]) => {
-				return {
-					originalBugs,
-					searchForm
-				};
-			}),
 
+				const searchFromNonEmptyFields = Object.entries(searchForm)
+					.filter(([key, value]) => checkNullOrEmpty(value));
 
-			filter((val) => {
-				const searchFormNonEmptyFields = Object.entries(val.searchForm)
-				.filter(([key, value]) => checkNullOrEmpty(value))
-				// .map(item => {
-				// 	let dict : { [id: string]: string } = {};
-				// 	dict[item[0]] = item[1];
-				// 	return dict;
-				// })
-				;
+				if (searchFromNonEmptyFields.length === 0) {
+					return {
+						filteredBugs: originalBugs,
+						searchForm
+					};
+				}
 
-				const filteredBugs = val.originalBugs.filter((item) => {
+				let filteredBugs = originalBugs.filter((item) => {
 					let finalArrayResults = [];
 
-					for (let i = 0; i < searchFormNonEmptyFields.length; i++) {
+					for (let i = 0; i < searchFromNonEmptyFields.length; i++) {
 						type ObjectKey = keyof typeof item; // Dynamically access Dictionary in TypeScript
 
-						const element = searchFormNonEmptyFields[i];
+						const element = searchFromNonEmptyFields[i];
 
-						debugger;
 						let valueToTest = item[filterMaps[element[0]] as ObjectKey];
 
 						// type ObjectKeyOfFilterActions = keyof typeof filterActions;
@@ -119,42 +112,25 @@ export class BugsReportingShellComponent implements OnInit, OnDestroy {
 						}
 					}
 
-					return finalArrayResults;
+					return finalArrayResults.length > 0;
 				});
-				return val != null;
-			}),
-			map((val) => val.originalBugs)
-		);
 
-		this.bugs$.subscribe((val)=>{
-			debugger;
+
+				return {
+					filteredBugs,
+					searchForm
+				};
+			})
+		)
+		.subscribe(items => {
+			this.bugs$ = of(items.filteredBugs);
 		});
+	}
 
-		// test$.subscribe((val)=>{
-
-		// });
-
-		// this.searchForm.get('searchColTitle')?.valueChanges
-		// .pipe(
-		// 	// To clear valueChanges
-		// 	// takeUntil(this.destroy$),
-		// 	debounceTime(400),
-		// 	distinctUntilChanged(),
-		// 	// This will take a val and switch to an endpoint of a choice
-		// 	filter((val) => {
-		// 		// this.onSearch(val)
-		// 		return val === 1;
-
-		// 	})
-		// );
+	ngOnInit(): void {
 
 	}
 
-	ngOnDestroy() {
-		// this.destroy$.next();
-		// this.destroy$.complete();
-
-	}
 
 	createNewBug() {
 		this.toastr.info('Sorry this feature has not been implemented yet');
@@ -192,7 +168,7 @@ export class BugsReportingShellComponent implements OnInit, OnDestroy {
 			"id": "6358f56cbf47a30046de24f0",
 			"title": "bug 2",
 			"description": "This is a simple bug",
-			"priority": 1,
+			"priority": 2,
 			"reporter": {
 				"id": 1,
 				"code": "QA",

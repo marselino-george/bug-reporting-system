@@ -1,5 +1,5 @@
 import { Component, ContentChild, Input, OnInit, TemplateRef } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 
 @Component({
 	selector: 'brs-bugs-reporting-table',
@@ -11,7 +11,7 @@ export class BugsReportingTableComponent implements OnInit {
 	// @Input() hasSearch!: boolean;
 	// @Input() hasEdit!: boolean;
 	// @Input() hasDelete!: boolean;
-	@Input() data!: any[];
+	@Input() data$: Observable<any[]> = EMPTY;
 	@ContentChild('headers') headers!: TemplateRef<any>;
 	@ContentChild('rows') rows!: TemplateRef<any>;
 
