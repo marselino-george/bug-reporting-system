@@ -4,7 +4,8 @@ import { AuthService } from '@core/auth';
 import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, Subject, of } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ToastrService } from 'ngx-toastr';
-import { IBugResponse, ICommentResponse, IReporterResponse } from '../models/ibugresponse.model';
+import { IBugResponse, ICommentResponse, IPriorityResponse, IReporterResponse } from '../models/ibugresponse.model';
+import { HttpService } from '@core/http/http.service';
 
 
 interface ISearchableBugsTable {
@@ -23,15 +24,22 @@ interface ISearchableBugsTable {
 export class BugsReportingShellComponent implements OnInit {
 
 	bugs$: Observable<IBugResponse[]>;
+	reporters$: Observable<IReporterResponse[]>;
+	priorities$: Observable<IPriorityResponse[]>;
 	searchForm: FormGroup;
 	destroy$ = new Subject<any>();
 
+
 	constructor(
 		private authService: AuthService,
+		private http: HttpService,
 		private formBuilder: FormBuilder,
 		private toastr: ToastrService) {
 
 		this.bugs$ = of(this.originalBugs);
+
+		this.priorities$ = this.http.get<IPriorityResponse[]>('priorities');
+		this.reporters$ = this.http.get<IReporterResponse[]>('reporters');
 
 		this.searchForm = this.formBuilder.group({
 			searchColTitle: '',
@@ -46,7 +54,7 @@ export class BugsReportingShellComponent implements OnInit {
 
 				return {
 					searchColTitle: val.searchColTitle.trim(),
-					searchColPriority: val.searchColPriority.trim(),
+					searchColPriority: val.searchColPriority,
 					searchColReporter: val.searchColReporter.trim(),
 					searchColStatus: val.searchColStatus.trim()
 				};
@@ -67,14 +75,15 @@ export class BugsReportingShellComponent implements OnInit {
 		};
 		const filterActions = {
 			searchColTitle: simpleStrIncludes,
-			searchColPriority: (valId: number, checkAgainst: number) => valId === checkAgainst,
-			searchColReporter: simpleStrIncludes,
+			searchColPriority: (valId: number, checkAgainst: number) => valId == Number(checkAgainst),
+			searchColReporter: (val: any, checkAgainst: number) => {
+				return val.id === Number(checkAgainst);
+			},
 			searchColStatus: simpleStrIncludes
 		} as { [id: string]: any } ;
 
-		const checkNullOrEmpty = (checkStr: string) : boolean => {
-			return checkStr != null && checkStr.trim() != ''
-		};
+		const isNullOrEmpty = (checkStr: string | null) : boolean =>
+			!(checkStr != null && checkStr.trim() != '');
 
 		combineLatest([
 			of(this.originalBugs),
@@ -85,7 +94,7 @@ export class BugsReportingShellComponent implements OnInit {
 			map(([originalBugs, searchForm]) => {
 
 				const searchFromNonEmptyFields = Object.entries(searchForm)
-					.filter(([key, value]) => checkNullOrEmpty(value));
+					.filter(([key, value]) => !isNullOrEmpty(value));
 
 				if (searchFromNonEmptyFields.length === 0) {
 					return {
@@ -96,16 +105,18 @@ export class BugsReportingShellComponent implements OnInit {
 
 				let filteredBugs = originalBugs.filter((item) => {
 					let finalArrayResults = [];
+					type ObjectKey = keyof typeof item; // Dynamically access Dictionary in TypeScript
 
 					for (let i = 0; i < searchFromNonEmptyFields.length; i++) {
-						type ObjectKey = keyof typeof item; // Dynamically access Dictionary in TypeScript
 
 						const element = searchFromNonEmptyFields[i];
 
 						let valueToTest = item[filterMaps[element[0]] as ObjectKey];
 
 						// type ObjectKeyOfFilterActions = keyof typeof filterActions;
-						const isMatchingElement : boolean = filterActions[element[0]](valueToTest, element[1]);
+						const elKey  = element[0];
+						const elVal = element[1];
+						const isMatchingElement : boolean = filterActions[elKey](valueToTest, elVal);
 						if (isMatchingElement) {
 							finalArrayResults.push(item);
 							break;

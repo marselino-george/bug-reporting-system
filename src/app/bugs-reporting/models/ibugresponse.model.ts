@@ -9,6 +9,12 @@ export interface IBugResponse {
 	comments: ICommentResponse[]
 };
 
+export interface IPriorityResponse {
+	id: number;
+	weight: number;
+	description: string;
+}
+
 export interface IReporterResponse {
 	id: number;
 	code: string;

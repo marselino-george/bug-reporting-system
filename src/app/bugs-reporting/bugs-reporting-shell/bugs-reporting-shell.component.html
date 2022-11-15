@@ -4,8 +4,27 @@
 		<ng-template #headers>
 			<tr *ngIf="true" [formGroup]="searchForm">
 				<th scope="col"><input type="text" class="form-control" formControlName="searchColTitle"></th>
-				<th scope="col"><input type="text" class="form-control" formControlName="searchColPriority"></th>
-				<th scope="col"><input type="text" class="form-control" formControlName="searchColReporter"></th>
+				<th scope="col">
+
+					<select *ngIf="priorities$ | async as priorities"
+						class="form-control"
+						formControlName="searchColPriority">
+						<option value="">Filter by Priority...</option>
+						<option *ngFor="let priority of priorities" [value]="priority.weight">
+							{{ priority.description }}
+						</option>
+					</select>
+				</th>
+				<th scope="col">
+					<select *ngIf="reporters$ | async as reporters"
+						class="form-control"
+						formControlName="searchColReporter">
+						<option value="">Filter by Reporter...</option>
+						<option *ngFor="let reporter of reporters" [value]="reporter.id">
+							{{ reporter.description }}
+						</option>
+					</select>
+				</th>
 				<th scope="col"></th>
 				<th scope="col"><input type="text" class="form-control" formControlName="searchColStatus"></th>
 				<th colspan="2" scope="colgroup"></th>
