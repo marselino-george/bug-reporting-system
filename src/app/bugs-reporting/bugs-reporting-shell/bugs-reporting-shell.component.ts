@@ -36,7 +36,7 @@ export class BugsReportingShellComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private toastr: ToastrService) {
 
-		this.bugs$ = of(this.originalBugs);
+		this.bugs$ = this.http.get<IBugResponse[]>('bugs'); // of(this.originalBugs);
 
 		this.priorities$ = this.http.get<IPriorityResponse[]>('priorities');
 		this.reporters$ = this.http.get<IReporterResponse[]>('reporters');
