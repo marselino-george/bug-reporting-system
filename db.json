@@ -23,7 +23,7 @@
       "id": "6358f56cbf47a30046de24f0",
       "title": "bug 2",
       "description": "This is a simple bug",
-      "priority": 1,
+      "priority": 2,
       "reporter": {
         "id": 1,
         "code": "QA",
